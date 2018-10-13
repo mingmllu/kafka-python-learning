@@ -22,3 +22,5 @@ docker run --net=confluent --rm confluentinc/cp-kafka:5.0.0 kafka-console-consum
 
 # Use case 1: Steam video
 # https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
+# Note 1: Install ZooKeeper and Kafka https://devops.profitbricks.com/tutorials/install-and-configure-apache-kafka-on-ubuntu-1604-1/ (download Kafka: https://www.apache.org/dyn/closer.cgi?path=/kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz)
+# Note 2: We must use low-resolution video source to avoid exceeding the maximum message size
