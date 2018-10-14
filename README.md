@@ -1,31 +1,67 @@
-# kafka-python-learning
-Experimental testbed to get experience with Kafka
+Purpose: Gain experience with Kafka
 
-# Single Node Basic Deployment on Docker
-# https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html
+## Install Apache ZooKeeper and Kafka servers
+The following steps apply to both Ubuntu 16.04 and 18.04 LTS servers.
 
-# Create a Docker Network:
-$docker network create confluent
+### Requirements:
+Ubuntu 16.04 LTS or 18.04 LTS
+A non-root user with sudo privileges
+OpenJDK 8 installed on your server. Kafka server won't be started in the later JDK due to a bug
+To install JDK8, see https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04#installing-specific-versions-of-openjdk 
+If your server is installed with multiple versions of JDK, you must switch to JDK8. See 
+https://askubuntu.com/questions/740757/switch-between-multiple-java-versions
 
-# Start ZooKeeper:
-docker run -d --net=confluent --name=zookeeper -e ZOOKEEPER_CLIENT_PORT=2181 confluentinc/cp-zookeeper:5.0.0
+### Install ZooKeeper
+By default ZooKeeper is available in Ubuntu default repository.
+Simply run the command:
+$sudo apt-get install zookeeperd
+Then ZooKeeper will be started as a daemon automatically.
+By default, ZooKeeper will run on port 2181.
+You can run
+$netstat -ant | grep :2181 
+to check on it.
 
-# Start Kafka:
-docker run -d --net=confluent --name=kafka -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 confluentinc/cp-kafka:5.0.0
+### Install Kafka server
+Download Kafka binaries:
+curl "http://www-eu.apache.org/dist/kafka/1.1.0/kafka_2.12-1.1.0.tgz" -o ~/Downloads/kafka.tgz
+or http://www.apache.org/closer.cgi?path=/kafka/0.9.0.0/
 
-# Create a Topic and Produce Data
-docker run --net=confluent --rm confluentinc/cp-kafka:5.0.0 kafka-topics --create --topic foo --partitions 1 --replication-factor 1 --if-not-exists --zookeeper zookeeper:2181
+$sudo mkdir /opt/kafka
+Copy the downloaded Kafka binaries to the directory /opt/kafka:
+$sudo cp kafka.tgz /opt/kafka
+or 
+$sudo cp kafka_2.11-0.9.0.0.tgz /opt/kafka
+$cd /opt/kafka
+$sudo tar -xvf kafka.tgz
+or 
+$sudo tar -xvf kafka_2.11-0.9.0.0.tgz
+$cd kafka_*
 
-# Verify that the topic was successfully created:
-docker run --net=confluent --rm confluentinc/cp-kafka:5.0.0 kafka-topics --describe --topic foo --zookeeper zookeeper:2181
+### Configure Kafka server
+If your Kafka clients (producers and consumers) will run on the same Ubuntu host machine, you don't need to anything here.
+If your Kafka clients will reside in separate servers or laptops (Linux/Mac/Windows), you must configure the Kafka servers so that *the brokers are accessible from within the same network by the producers and consumers*.
+To do this, sudo open the configuration file /config/server.properties, then define the parameter "advertised.listeners":
+```
+# Hostname and port the broker will advertise to producers and consumers. If not set,
+# it uses the value for "listeners" if configured.  Otherwise, it will use the value
+# returned from java.net.InetAddress.getCanonicalHostName().
+advertised.listeners=PLAINTEXT://x.y.z.w:9092
+```
+where x.y.z.w is the Kafka server host's IPv4 address, for example, 10.0.0.5. It is *important* that the bootstrap_servers will be x.y.z.w:9092 (e.g., 10.0.0.5:9092) when creating producers and consumers.
 
-# Publish data to your new topic:
-docker run --net=confluent --rm confluentinc/cp-kafka:5.0.0 bash -c "seq 42 | kafka-console-producer --request-required-acks 1 --broker-list kafka:9092 --topic foo && echo 'Produced 42 messages.'"
+### Start Kafka server
+The You can start the Kafka broker:
+$sudo bin/kafka-server-start.sh config/server.properties
+You can run
+$netstat --ant | grep :9092
+to check if the Kafka server is on.
 
-# Read back the message using the built-in Console consumer:
-docker run --net=confluent --rm confluentinc/cp-kafka:5.0.0 kafka-console-consumer --bootstrap-server kafka:9092 --topic foo --from-beginning --max-messages 42
+### Stop Kafka server
+$sudo bin/kafka-server-stop.sh config/server.properties
 
-# Use case 1: Steam video
-# https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
-# Note 1: Install ZooKeeper and Kafka https://devops.profitbricks.com/tutorials/install-and-configure-apache-kafka-on-ubuntu-1604-1/ (download Kafka: https://www.apache.org/dyn/closer.cgi?path=/kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz)
-# Note 2: We must use low-resolution video source to avoid exceeding the maximum message size
+## Install kafka-python at the client side
+
+
+## Use case 1: Stream video
+https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
+*Note*: We must use low-resolution video source to avoid exceeding the maximum message size
