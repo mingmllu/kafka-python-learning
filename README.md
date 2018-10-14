@@ -121,6 +121,10 @@ and uncomment the line
 ```
 and replace the example address "10.0.0.5" with the correct Kafka server's IPv4 address.
 
+Make sure that the consumer will be consuming the correct topic:
+```
+topic = 'my-json-topic'
+```
 Then you can start a new terminal and run the command "python json-consumer.py". You are allowed to start multiple consumers from the same machine or different machines, but only *one* of the consumers is able to receive messages because there is only 1 partition per topic in our default configuration.
 
 ## Use case 1: Stream video
