@@ -1,5 +1,9 @@
 from kafka import KafkaConsumer
 
+# If the broker installed on a separate host machine,
+# use the machine's IP address
+#brokers = ['10.0.0.5:9092']
+# If the broker installed on the same host machine, use localhost or 0.0.0.0
 brokers = ['0.0.0.0:9092']
 
 #connect to Kafka server and pass the topic we want to consume
