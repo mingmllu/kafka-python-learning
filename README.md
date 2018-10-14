@@ -72,6 +72,11 @@ advertised.listeners=PLAINTEXT://x.y.z.w:9092
 ```
 where x.y.z.w is the Kafka server host's IPv4 address, for example, 10.0.0.5. It is *important* that the bootstrap_servers will be x.y.z.w:9092 (e.g., 10.0.0.5:9092) when creating producers and consumers.
 
+For Kafka version 2.11-0.9.0.0, set the parameter "advertised.host.name" to the server's IPv4 address, e.g.
+```
+advertised.host.name = 10.0.0.5
+```
+
 ### Start Kafka server
 The You can start the Kafka broker:
 
