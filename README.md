@@ -87,8 +87,43 @@ to check if the Kafka server is on.
 $sudo bin/kafka-server-stop.sh config/server.properties
 
 ## Install kafka-python at the client side
+Ceate virtual environment (optioal)
 
+$pip install kafka-python
+
+### Launch Kafka producer
+Before starting the Kafka producer "json-producder.py", if you use a remote Kafka server in the same network, comment out the line 
+```
+brokers = ['0.0.0.0:9092']
+```
+and uncomment the line 
+```
+#brokers = ['10.0.0.5:9092']
+```
+and replace the example address "10.0.0.5" with the correct Kafka server's IPv4 address.
+
+You can also change the topic:
+```
+# Assign a topic
+topic = 'my-json-topic'
+```
+
+Then you can start a new terminal and run the command "python json-producer.py" to kick off. You can start multiple producers from the same machine or different machines.
+
+### Launch Kafka consumer
+Before starting the Kafka consumer "json-consumer.py", if you use a remote Kafka server in the same network, comment out the line 
+```
+brokers = ['0.0.0.0:9092']
+```
+and uncomment the line 
+```
+#brokers = ['10.0.0.5:9092']
+```
+and replace the example address "10.0.0.5" with the correct Kafka server's IPv4 address.
+
+Then you can start a new terminal and run the command "python json-consumer.py". You are allowed to start multiple consumers from the same machine or different machines, but only *one* of the consumers is able to receive messages because there is only 1 partition per topic in our default configuration.
 
 ## Use case 1: Stream video
 https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
+
 *Note*: We must use low-resolution video source to avoid exceeding the maximum message size
