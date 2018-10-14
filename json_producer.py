@@ -4,13 +4,14 @@ import time
 import json
 from kafka import KafkaProducer
 import random
+import socket
 
 #  connect to Kafka
 KAFKA_VERSION = (0, 10)
-producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+producer = KafkaProducer(bootstrap_servers='10.0.0.5:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 # Assign a topic
 topic = 'my-json-topic'
-location = 'Kiosk_A'
+location = 'Hostname:' + socket.gethostname()
 
 def json_emitter():
 

@@ -1,6 +1,9 @@
 from kafka import KafkaConsumer
+
+brokers = ['0.0.0.0:9092']
+
 #connect to Kafka server and pass the topic we want to consume
-consumer = KafkaConsumer('my-json-topic', group_id='view', bootstrap_servers=['0.0.0.0:9092'])
+consumer = KafkaConsumer('my-json-topic', group_id='view', bootstrap_servers=brokers)
 print("Start to listen on Kafka broker")
 print("It may take some time to receive the first message")
 print("")
