@@ -1,4 +1,3 @@
-Purpose: Gain experience with Kafka
 
 ## Install Apache ZooKeeper and Kafka servers
 The following steps apply to both Ubuntu 16.04 and 18.04 LTS servers.
@@ -132,6 +131,44 @@ topic = 'my-json-topic'
 ```
 Then you can start a new terminal and run the command "python json-consumer.py". You are allowed to start multiple consumers from the same machine or different machines, but only *one* of the consumers is able to receive messages because there is only 1 partition per topic in our default configuration.
 
+### JavaScript Kafka Consumer
+A Kafka consumer can be also created in JavaScript. See https://scotch.io/tutorials/an-introduction-to-apache-kafka.
+
+You need to install node.js if it is not available. Refresh your local package index by typing: 
+```
+$ sudo apt update
+```
+Install Node.js from the repositories:
+```
+$ sudo apt install nodejs
+```
+Then install no-kafka that is Apache Kafka client for Node.js with new unified consumer API support (https://github.com/heroku/no-kafka#simpleconsumer). In most cases, you'll also need to install npm, the Node.js package manager:
+```
+$ sudo apt install npm
+
+```
+Now install no-kafka
+```
+$ npm install no-kafka
+```
+Before starting the Kafka consumer "json-consumer.js", if you use a remote Kafka server in the same network, comment out the line 
+```
+var brokers = '0.0.0.0:9092'
+```
+and uncomment the line 
+```
+#var brokers = '10.0.0.5:9092'
+```
+and replace the example address "10.0.0.5" with the correct Kafka server's IPv4 address.
+
+Make sure that the consumer will be consuming the correct topic:
+```
+var topic = 'my-json-topic'
+```
+You can stat JavaScript Kafka consumer by typing:
+```
+$ node json_consumer.js
+```
 ## Use case 1: Stream video
 https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
 
