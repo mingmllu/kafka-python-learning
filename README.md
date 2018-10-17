@@ -131,6 +131,17 @@ topic = 'my-json-topic'
 ```
 Then you can start a new terminal and run the command "python json-consumer.py". You are allowed to start multiple consumers from the same machine or different machines, but only *one* of the consumers is able to receive messages because there is only 1 partition per topic in our default configuration.
 
+In order for multiple consumers to listen on the same topic, you can set the consumers to different groups by setting different group_id. For example, in consumer 1, you can set *group_id* to view1: 
+```
+topic = 'my-json-topic'
+consumer = KafkaConsumer(topic, group_id='view1', bootstrap_servers=brokers)
+```
+In consumer 2, *group_id* can be set to view2:
+```
+topic = 'my-json-topic'
+consumer = KafkaConsumer(topic, group_id='view2', bootstrap_servers=brokers)
+```
+
 ### JavaScript Kafka Consumer
 A Kafka consumer can be also created in JavaScript. See https://scotch.io/tutorials/an-introduction-to-apache-kafka.
 
@@ -165,7 +176,11 @@ Make sure that the consumer will be consuming the correct topic:
 ```
 var topic = 'my-json-topic'
 ```
-You can stat JavaScript Kafka consumer by typing:
+In order for multiple consumers to listen on the same topic, you can set the consumers to different groups by setting different *groupId*. For example:
+```
+const consumer = new Kafka.SimpleConsumer ({connectionString: broker, groupId: view1})
+```
+You can start JavaScript Kafka consumer by typing:
 ```
 $ node json_consumer.js
 ```
