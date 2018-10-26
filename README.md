@@ -1,8 +1,31 @@
 
+## Set up Kafka Broker in Docker Environment
+
+This is a preferred approach to deplying a Kafka broker.
+
+See https://github.com/wurstmeister/kafka-docker. Assume that you have installed docker and docker-compose. Take the simple steps as below to bring up kafka conatiners:
+
+1. Check out the kafka-docker files including docker compose configuration.
+
+```
+$ git clone https://github.com/wurstmeister/kafka-docker.git
+```
+2. Change directory to "kafka-docker", open the file "docker-compose-single-broker.yml", and change the KAFKA_ADVERTISED_HOST_NAME to match your docker host IP address:
+
+3. Run the command:
+```
+$ docker-compose -f docker-compose-single-broker.yml up -d
+```
+
 ## Install Apache ZooKeeper and Kafka servers
+
+*If you has installed Kafka in docker, you can directly go to the section "Install kafka-python at the client side"*
+
+
 The following steps apply to both Ubuntu 16.04 and 18.04 LTS servers.
 
 ### Requirements:
+
 Ubuntu 16.04 LTS or 18.04 LTS
 
 A non-root user with sudo privileges
@@ -15,6 +38,7 @@ If your server is installed with multiple versions of JDK, you must switch to JD
 https://askubuntu.com/questions/740757/switch-between-multiple-java-versions
 
 ### Install ZooKeeper
+
 By default ZooKeeper is available in Ubuntu default repository.
 
 Simply run the command:
@@ -32,6 +56,7 @@ $netstat -ant | grep :2181
 to check on it.
 
 ### Install Kafka server
+
 Download Kafka binaries:
 
 curl "http://www-eu.apache.org/dist/kafka/1.1.0/kafka_2.12-1.1.0.tgz" -o ~/Downloads/kafka.tgz
@@ -58,6 +83,7 @@ $sudo tar -xvf kafka_2.11-0.9.0.0.tgz
 $cd kafka_*
 
 ### Configure Kafka server
+
 If your Kafka clients (producers and consumers) will run on the same Ubuntu host machine, you don't need to anything here.
 
 If your Kafka clients will reside in separate servers or laptops (Linux/Mac/Windows), you must configure the Kafka servers so that *the brokers are accessible from within the same network by the producers and consumers*.
@@ -77,6 +103,7 @@ advertised.host.name = 10.0.0.5
 ```
 
 ### Start Kafka server
+
 The You can start the Kafka broker:
 
 $sudo bin/kafka-server-start.sh config/server.properties
@@ -88,14 +115,17 @@ $netstat --ant | grep :9092
 to check if the Kafka server is on.
 
 ### Stop Kafka server
+
 $sudo bin/kafka-server-stop.sh config/server.properties
 
 ## Install kafka-python at the client side
+
 Ceate virtual environment (optioal)
 
 $pip install kafka-python
 
 ### Launch Kafka producer
+
 Before starting the Kafka producer "json-producder.py", if you use a remote Kafka server in the same network, comment out the line 
 ```
 brokers = ['0.0.0.0:9092']
@@ -115,6 +145,7 @@ topic = 'my-json-topic'
 Then you can start a new terminal and run the command "python json-producer.py" to kick off. You can start multiple producers from the same machine or different machines.
 
 ### Launch Kafka consumer
+
 Before starting the Kafka consumer "json-consumer.py", if you use a remote Kafka server in the same network, comment out the line 
 ```
 brokers = ['0.0.0.0:9092']
@@ -143,6 +174,7 @@ consumer = KafkaConsumer(topic, group_id='view2', bootstrap_servers=brokers)
 ```
 
 ### JavaScript Kafka Consumer
+
 A Kafka consumer can be also created in JavaScript. See https://scotch.io/tutorials/an-introduction-to-apache-kafka.
 
 You need to install node.js if it is not available. Refresh your local package index by typing: 
@@ -185,6 +217,7 @@ You can start JavaScript Kafka consumer by typing:
 $ node json_consumer.js
 ```
 ## Use case 1: Stream video
+
 https://scotch.io/tutorials/build-a-distributed-streaming-system-with-apache-kafka-and-python
 
 *Note*: We must use low-resolution video source to avoid exceeding the maximum message size
