@@ -43,7 +43,7 @@ By default ZooKeeper is available in Ubuntu default repository.
 
 Simply run the command:
 
-$sudo apt-get install zookeeperd
+$ sudo apt-get install zookeeperd
 
 Then ZooKeeper will be started as a daemon automatically.
 
@@ -51,7 +51,7 @@ By default, ZooKeeper will run on port 2181.
 
 You can run
 
-$netstat -ant | grep :2181 
+$ netstat -ant | grep :2181 
 
 to check on it.
 
@@ -66,21 +66,21 @@ $sudo mkdir /opt/kafka
 
 Copy the downloaded Kafka binaries to the directory /opt/kafka:
 
-$sudo cp kafka.tgz /opt/kafka
+$ sudo cp kafka.tgz /opt/kafka
 
 or 
 
-$sudo cp kafka_2.11-0.9.0.0.tgz /opt/kafka
+$ sudo cp kafka_2.11-0.9.0.0.tgz /opt/kafka
 
-$cd /opt/kafka
+$ cd /opt/kafka
 
-$sudo tar -xvf kafka.tgz
+$ sudo tar -xvf kafka.tgz
 
 or 
 
-$sudo tar -xvf kafka_2.11-0.9.0.0.tgz
+$ sudo tar -xvf kafka_2.11-0.9.0.0.tgz
 
-$cd kafka_*
+$ cd kafka_*
 
 ### Configure Kafka server
 
@@ -106,23 +106,23 @@ advertised.host.name = 10.0.0.5
 
 The You can start the Kafka broker:
 
-$sudo bin/kafka-server-start.sh config/server.properties
+$ sudo bin/kafka-server-start.sh config/server.properties
 
 You can run
 
-$netstat --ant | grep :9092
+$ netstat --ant | grep :9092
 
 to check if the Kafka server is on.
 
 ### Stop Kafka server
 
-$sudo bin/kafka-server-stop.sh config/server.properties
+$ sudo bin/kafka-server-stop.sh config/server.properties
 
 ## Install kafka-python at the client side
 
 Ceate virtual environment (optioal)
 
-$pip install kafka-python
+$ pip install kafka-python
 
 ### Launch Kafka producer
 
